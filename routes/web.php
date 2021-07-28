@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,8 @@ Route::get('/', function () {
 
 Route::get('medicine_list', [MedicineController::class, 'index']);
 Route::get('medicine_chart', [MedicineController::class, 'medicineChart']);
+
+Route::get('position', [PositionController::class, 'addPosition']);
+Route::post('save/position', [PositionController::class, 'savePosition']);
+
+Route::post('medicine/add/to/chart', [MedicineController::class, 'addToChart']);

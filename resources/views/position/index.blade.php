@@ -5,16 +5,16 @@
 
     <div class="row">
         <div class="col">
-            <button id="medicine_chart_add">Add</button>
+            <button id="position_add">Add</button>
         </div>
     </div>
 
     <div id="medicine_chart_modal" class="modal fade">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form id="medicine_chart_modal_form">
+                <form id="position_form">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add to Chart</h5>
+                        <h5 class="modal-title">Add Position</h5>
                         <p class="text-danger ml-5" id="message"></p>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -22,20 +22,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="medicine_name">Medicine Name</label>
-                            <select id="medicine_name" name="medicine_name" class="form-control form-control-sm">
-                                @foreach ($medicineList as $list)
-                                    <option value={{ $list->id }}>{{ $list->name }} - {{ $list->strength }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
                             <label id="position" for="position">Position</label>
                             <select id="position" name="position" class="form-control form-control-sm">
-                                @foreach ($positions as $position)
-                                    <option value={{ $position->id }}>{{ $position->position }}</option>
-                                @endforeach
+                                <option value="A1">A1</option>
+                                <option value="A2">A2</option>
+                                <option value="A3">A3</option>
+                                <option value="A4">A4</option>
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
+                                <option value="B3">B3</option>
+                                <option value="B4">B4</option>
                             </select>
                         </div>
 
@@ -52,6 +48,8 @@
                             <textarea name="description" id="description" class="form-control form-control-sm" cols="5" rows="5"></textarea>
                         </div>
 
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-sm btn-warning">Submit</button>
@@ -67,21 +65,19 @@
             <table class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Name</th>
                         <th>Postion</th>
-                        <th>Price</th>
-                        <th>Generic Name</th>
-                        <th>Pharmaceutical Name</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($chartList as $list)
+                    @foreach ($allPositions as $position)
                     <tr>
-                        <td>{{ $list->MedicineList->name }} - {{ $list->MedicineList->strength }}</td>
-                        <td>{{ $list->position->position }}</td>
-                        <td>{{ $list->MedicineList->unit_price }}</td>
-                        <td>{{ $list->MedicineList->generic_name }}</td>
-                        <td>{{ $list->MedicineList->pharmaceutical_name }}</td>
+                        <td>{{ $position->position }}</td>
+                        <td>{{ $position->status }}</td>
+                        <td>{{ $position->description }}</td>
+                        <td>Edit</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -96,38 +92,35 @@
             console.log('hello');
         });
 
-        $(document).on('click', '#medicine_chart_add', function () {
+        $(document).on('click', '#position_add', function () {
             $('#medicine_chart_modal_form').trigger('reset');
             clearForm();
-            $('#medicine_chart_modal').modal('show').on('shown.bs.modal', function () {
-                $('#medicine_name').select2();
-            });
+            $('#medicine_chart_modal').modal('show');
         });
 
 
         function clearForm() {
             $('#form_message').empty();
-            $('#medicine_chart_modal_form').find('.text-danger').removeClass('text-danger');
-            $('#medicine_chart_modal_form').find('.is-invalid').removeClass('is-invalid');
-            $('#fomedicine_chart_modal_formrm').find('span').remove();
+            $('#position_form').find('.text-danger').removeClass('text-danger');
+            $('#position_form').find('.is-invalid').removeClass('is-invalid');
+            $('#position_form').find('span').remove();
             return true;
         }
 
 
-        $(document).on('submit', '#medicine_chart_modal_form' ,function () {
+        $(document).on('submit', '#position_form' ,function () {
             console.log('hello');
             let data = new FormData(this);
             data.append('_token', '{{ csrf_token() }}');
             $.ajax({
                 method: 'post',
-                url: '{{ url('medicine/add/to/chart') }}',
+                url: '{{ url('save/position') }}',
                 data: data,
                 processData: false,
                 contentType: false,
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    location.reload();
                 },
                 error: function (xhr) {
                     console.log(xhr);
