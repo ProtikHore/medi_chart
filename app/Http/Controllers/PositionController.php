@@ -15,6 +15,7 @@ class PositionController extends Controller
     }
 
     public function savePosition(Request $request) {
+        //return response()->json($request);
         $record = $request->get('id') === null ? new Position() : Position::find($request->get('id'));
         $record->position = $request->get('position');
         $record->status = $request->get('status');
@@ -22,5 +23,10 @@ class PositionController extends Controller
         $request->get('id') === null ? $record->created_by = session('id') : $record->updated_by = session('id');
         $record->save();
         return response()->json($record);
+    }
+
+    public function getEditData($id) {
+        $data = Position::where('id', $id)->first();
+        return response()->json($data);
     }
 }

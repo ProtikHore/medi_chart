@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'title' => "Configuration"
+    'title' => "Position"
 ])
 @section('content')
 
@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <div id="medicine_chart_modal" class="modal fade">
+    <div id="position_modal" class="modal fade">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="position_form">
@@ -21,8 +21,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label id="position" for="position">Position</label>
+                            <label for="position">Position</label>
                             <select id="position" name="position" class="form-control form-control-sm">
                                 <option value="A1">A1</option>
                                 <option value="A2">A2</option>
@@ -52,7 +53,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-sm btn-warning">Submit</button>
+                        <button type="submit" class="btn btn-sm btn-warning" id="position_form_submit">Submit</button>
                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -77,7 +78,7 @@
                         <td>{{ $position->position }}</td>
                         <td>{{ $position->status }}</td>
                         <td>{{ $position->description }}</td>
-                        <td>Edit</td>
+                        <td><i class="far fa-edit edit" data-id="{{ $position->id }}" style="cursor: pointer; font-size: 1rem;" data-toggle="tooltip" title="Edit"></i></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -93,9 +94,9 @@
         });
 
         $(document).on('click', '#position_add', function () {
-            $('#medicine_chart_modal_form').trigger('reset');
+            $('#position_form').trigger('reset');
             clearForm();
-            $('#medicine_chart_modal').modal('show');
+            $('#position_modal').modal('show');
         });
 
 
@@ -121,6 +122,7 @@
                 cache: false,
                 success: function (result) {
                     console.log(result);
+                    location.reload();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -128,6 +130,31 @@
             });
             return false;
         });
+
+        $(document).on('click', '.edit', function () {
+            let id = $(this).data('id');
+            $.ajax({
+                method: 'get',
+                url: '{{ url('get/position/edit/data') }}' + '/' + id,
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    //clearForm();
+                    //$('#position_form').trigger('reset');
+                    $('#id').val(result.id);
+                    $('#position').val(result.position);
+                    $('#status').val(result.status);
+                    $('#description').val(result.description);
+                    $('#position_form_submit').text('UPDATE');
+                    $('#position_modal').modal('show');
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+
 
     </script>
 

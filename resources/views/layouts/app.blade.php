@@ -51,6 +51,15 @@
 </head>
 <body style="background: url('{{asset('images/back.jpg')}}');background-repeat: repeat; margin: 0 auto;width: 100%;height: 100%" class="container-fluid">
 
+
+<div class="row">
+    <div class="col">
+        <a href="{{ url('position') }}">Position</a>
+        <a href="{{ url('medicine_list') }}">Medicine List</a>
+        <a href="{{ url('medicine_chart') }}">Medicine Chart</a>
+    </div>
+</div>
+
 <div class="row mt-2">
     <div class="col">
         @yield('content')

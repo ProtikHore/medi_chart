@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'title' => "Configuration"
+    'title' => "Medicine List"
 ])
 @section('content')
 

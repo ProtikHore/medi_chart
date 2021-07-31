@@ -41,4 +41,9 @@ class MedicineController extends Controller
         $record->save();
         return response()->json($record);
     }
+
+    public function getMedicineChartData($id) {
+        $data = Medicine_Chart::where('id', $id)->with('position', 'MedicineList')->first();
+        return response()->json($data);
+    }
 }

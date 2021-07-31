@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'title' => "Configuration"
+    'title' => "Medicine Chart"
 ])
 @section('content')
 
@@ -21,6 +21,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label for="medicine_name">Medicine Name</label>
                             <select id="medicine_name" name="medicine_name" class="form-control form-control-sm">
@@ -31,7 +32,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label id="position" for="position">Position</label>
+                            <label for="position">Position</label>
                             <select id="position" name="position" class="form-control form-control-sm">
                                 @foreach ($positions as $position)
                                     <option value={{ $position->id }}>{{ $position->position }}</option>
@@ -54,7 +55,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-sm btn-warning">Submit</button>
+                        <button type="submit" class="btn btn-sm btn-warning" id="medicine_chart_modal_form_submit">Submit</button>
                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -72,6 +73,7 @@
                         <th>Price</th>
                         <th>Generic Name</th>
                         <th>Pharmaceutical Name</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,6 +84,7 @@
                         <td>{{ $list->MedicineList->unit_price }}</td>
                         <td>{{ $list->MedicineList->generic_name }}</td>
                         <td>{{ $list->MedicineList->pharmaceutical_name }}</td>
+                        <td><i class="far fa-edit edit" data-id="{{ $list->id }}" style="cursor: pointer; font-size: 1rem;" data-toggle="tooltip" title="Edit"></i></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -128,6 +131,31 @@
                 success: function (result) {
                     console.log(result);
                     location.reload();
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+
+        $(document).on('click', '.edit', function () {
+            let id = $(this).data('id');
+            $.ajax({
+                method: 'get',
+                url: '{{ url('get/medicine/chart/edit/data') }}' + '/' + id,
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    //clearForm();
+                    //$('#position_form').trigger('reset');
+                    $('#id').val(result.id);
+                    $('#medicine_name').val(result.medicine_list_id);
+                    $('#position').val(result.position_id);
+                    $('#status').val(result.status);
+                    $('#description').val(result.description);
+                    $('#medicine_chart_modal_form_submit').text('UPDATE');
+                    $('#medicine_chart_modal').modal('show');
                 },
                 error: function (xhr) {
                     console.log(xhr);

@@ -28,9 +28,11 @@ Route::get('/', function () {
 });
 
 Route::get('medicine_list', [MedicineController::class, 'index']);
-Route::get('medicine_chart', [MedicineController::class, 'medicineChart']);
 
 Route::get('position', [PositionController::class, 'addPosition']);
 Route::post('save/position', [PositionController::class, 'savePosition']);
+Route::get('get/position/edit/data/{id}', [PositionController::class, 'getEditData']);
 
+Route::get('medicine_chart', [MedicineController::class, 'medicineChart']);
 Route::post('medicine/add/to/chart', [MedicineController::class, 'addToChart']);
+Route::get('get/medicine/chart/edit/data/{id}', [MedicineController::class, 'getMedicineChartData']);
