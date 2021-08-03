@@ -3,9 +3,37 @@
 ])
 @section('content')
 
-    <div class="row">
+    <div class="row mb-2">
         <div class="col">
             <button id="medicine_chart_add">Add</button>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="medicine_search_name">Medicine Search Name</label>
+                <select id="medicine_search_name" name="medicine_search_name" class="form-control form-control-sm">
+                    @foreach ($chartList as $list)
+                        <option value={{ $list->id }}>{{ $list->MedicineList->name }} - {{ $list->MedicineList->strength }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2 mt-2 sr-only" id="searchRow">
+        <div class="col" style="border: 1px solid blue;">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Strength</th>
+                        <th>Price</th>
+                        <th>Position</th>
+                    </tr>
+                </thead>
+                <tbody id="searchData">
+
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -97,6 +125,7 @@
 
         $(document).ready(function () {
             console.log('hello');
+            $('#medicine_search_name').select2();
         });
 
         $(document).on('click', '#medicine_chart_add', function () {
@@ -156,6 +185,31 @@
                     $('#description').val(result.description);
                     $('#medicine_chart_modal_form_submit').text('UPDATE');
                     $('#medicine_chart_modal').modal('show');
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+
+        $(document).on('change', '#medicine_search_name', function () {
+            let medicineSearch = $(this).val();
+            console.log($(this).val());
+            $.ajax({
+                method: 'get',
+                url: '{{ url('get/medicine/chart/search/medicine') }}' + '/' + medicineSearch,
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    $('#searchData').empty();
+                    $('#searchData').append($('<tr></tr>')
+                        .append('<td>' + result.medicine_list.name + '</td>')
+                        .append('<td>' + result.medicine_list.strength+ '</td>')
+                        .append('<td>' + result.medicine_list.unit_price + '</td>')
+                        .append('<td>' + result.position.position + '</td>')
+                    );
+                    $('#searchRow').removeClass('sr-only');
                 },
                 error: function (xhr) {
                     console.log(xhr);

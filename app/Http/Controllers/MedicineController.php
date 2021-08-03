@@ -48,4 +48,9 @@ class MedicineController extends Controller
         $data = Medicine_Chart::where('id', $id)->with('position', 'MedicineList')->first();
         return response()->json($data);
     }
+
+    public function getMedicineSearchData($medicineSearch) {
+        $medicineSearchList = Medicine_Chart::where('id', $medicineSearch)->with('position', 'MedicineList')->first();
+        return response()->json($medicineSearchList);
+    }
 }

@@ -36,3 +36,4 @@ Route::get('get/position/edit/data/{id}', [PositionController::class, 'getEditDa
 Route::get('medicine_chart', [MedicineController::class, 'medicineChart']);
 Route::post('medicine/add/to/chart', [MedicineController::class, 'addToChart']);
 Route::get('get/medicine/chart/edit/data/{id}', [MedicineController::class, 'getMedicineChartData']);
+Route::get('get/medicine/chart/search/medicine/{medicine}', [MedicineController::class, 'getMedicineSearchData']);
