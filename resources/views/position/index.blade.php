@@ -24,16 +24,7 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label for="position">Position</label>
-                            <select id="position" name="position" class="form-control form-control-sm">
-                                <option value="A1">A1</option>
-                                <option value="A2">A2</option>
-                                <option value="A3">A3</option>
-                                <option value="A4">A4</option>
-                                <option value="B1">B1</option>
-                                <option value="B2">B2</option>
-                                <option value="B3">B3</option>
-                                <option value="B4">B4</option>
-                            </select>
+                            <input type="text" id="position" name="position" class="form-control form-control-sm" placeholder="Position">
                         </div>
 
                         <div class="form-group">

@@ -21,7 +21,9 @@ class MedicineController extends Controller
     public function medicineChart() {
         $chartList = Medicine_Chart::with('position', 'MedicineList')->get();
         //dd($chartList[0]->MedicineList);
-        $medicineList = Medicine_List::get();
+        $medicineList = Medicine_List::where('pharmaceutical_name', 'Square Pharmaceuticals Ltd.')
+                                       ->orWhere('pharmaceutical_name', 'Incepta Pharmaceuticals Ltd.')
+                                       ->get();
         $positions = Position::get();
         return view('medicine.chart', compact(
             'chartList',
